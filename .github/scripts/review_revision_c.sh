@@ -12,6 +12,10 @@ else
     mapfile -t revision_files < <(find 20_08_2026_revision -type f -name '*.c' | sort)
 fi
 
+if ((${#revision_files[@]} == 0)); then
+    mapfile -t revision_files < <(find 20_08_2026_revision -type f -name '*.c' | sort)
+fi
+
 printf '# Revue automatique des exercices C\n\n'
 if ((${#revision_files[@]} == 0)); then
     printf 'Aucun fichier C de révision modifié dans ce push.\n'
