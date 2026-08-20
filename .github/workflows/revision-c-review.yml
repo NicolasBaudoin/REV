@@ -1,0 +1,29 @@
+name: Revision C review
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '20_08_2026_revision/**/*.c'
+      - '03/**'
+      - '.github/scripts/review_revision_c.sh'
+      - '.github/workflows/revision-c-review.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  review:
+    name: Compare revision files with subjects
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Run C revision checks
+        env:
+          PUSH_BEFORE: ${{ github.event.before }}
+          PUSH_AFTER: ${{ github.sha }}
+        run: bash .github/scripts/review_revision_c.sh "$PUSH_BEFORE" "$PUSH_AFTER" | tee "$GITHUB_STEP_SUMMARY"

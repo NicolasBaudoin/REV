@@ -5,7 +5,7 @@
 
 int main(int ac, char **av)
 {
-    if (av != 2 || !av[1][0])
+    if (ac != 2 || !av[1][0])
         return 1;
     char *buf = NULL, *s = av[1], tmp[4096];
     int n, i, k, len = 0, cap = 0, sl = strlen(s);
