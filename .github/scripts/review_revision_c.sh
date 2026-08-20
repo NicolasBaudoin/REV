@@ -25,14 +25,27 @@ fi
 failed=0
 for file in "${revision_files[@]}"; do
     exercise=$(basename "$file" .c)
-    subject=$(find 03 -type f -path "*/$exercise/sub.txt" | head -n 1)
+    case "$exercise" in
+        permutation)
+            exercise_dir="03/level2/permutations"
+            reference="03/level2/permutations/best_permutation_exam.c"
+            ;;
+        *)
+            exercise_dir=$(find 03 -type f -path "*/$exercise/sub.txt" -printf '%h\n' | head -n 1)
+            reference=$(find "$exercise_dir" -maxdepth 1 -type f -name '*.c' ! -name "$exercise.c" | head -n 1)
+            ;;
+    esac
+    subject="$exercise_dir/sub.txt"
     printf '## `%s`\n\n' "$file"
 
-    if [[ -z "$subject" ]]; then
+    if [[ ! -f "$subject" ]]; then
         printf ':warning: Sujet correspondant introuvable sous `03/`.\n\n'
         continue
     fi
     printf '**Sujet:** `%s`\n\n' "$subject"
+    if [[ -n "${reference:-}" && -f "$reference" ]]; then
+        printf '**Reference:** `%s`\n\n' "$reference"
+    fi
 
     binary="$tmp_dir/$exercise"
     if cc -D_GNU_SOURCE -std=c99 -Wall -Wextra -Werror "$file" -o "$binary" 2>"$tmp_dir/$exercise.compile.log"; then
@@ -43,7 +56,7 @@ for file in "${revision_files[@]}"; do
         continue
     fi
 
-    allowed=$(sed -n '/^Allowed functions:/,/^---/p' "$subject" | sed '1d;/^---/d' | tr ',[:space:]' '\n' | sed '/^$/d' | sort -u)
+    allowed=$(sed -n '/^Allowed functions:/,/^---/p' "$subject" | sed '1s/^Allowed functions:[[:space:]]*//' | sed '/^---/d' | tr ',[:space:]' '\n' | sed '/^$/d' | sort -u)
     calls=$(grep -hoE '[[:alnum:]_]+[[:space:]]*\(' "$file" | sed 's/[[:space:]]*($//' | sort -u)
     forbidden=()
     while read -r call; do
