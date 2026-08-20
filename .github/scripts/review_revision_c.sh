@@ -58,12 +58,16 @@ for file in "${revision_files[@]}"; do
 
     allowed=$(sed -n '/^Allowed functions:/,/^---/p' "$subject" | sed '1s/^Allowed functions:[[:space:]]*//' | sed '/^---/d' | tr ',[:space:]' '\n' | sed '/^$/d' | sort -u)
     calls=$(grep -hoE '[[:alnum:]_]+[[:space:]]*\(' "$file" | sed 's/[[:space:]]*($//' | sort -u)
+    local_functions=$(grep -hoE '[[:alnum:]_]+[[:space:]]*\([^;{}]*\)[[:space:]]*\{' "$file" | sed -E 's/[[:space:]]*\([^;{}]*\)[[:space:]]*\{$//' | sort -u)
     forbidden=()
     while read -r call; do
         [[ -z "$call" ]] && continue
         case "$call" in
             if|else|while|for|switch|return|sizeof|main) continue ;;
         esac
+        if grep -Fxq "$call" <<< "$local_functions"; then
+            continue
+        fi
         if ! grep -Fxq "$call" <<< "$allowed"; then
             forbidden+=("$call")
         fi
