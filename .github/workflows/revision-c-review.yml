@@ -27,4 +27,4 @@ jobs:
         env:
           PUSH_BEFORE: ${{ github.event.before }}
           PUSH_AFTER: ${{ github.sha }}
-        run: bash .github/scripts/review_revision_c.sh "$PUSH_BEFORE" "$PUSH_AFTER" | tee "$GITHUB_STEP_SUMMARY"
+        run: set -o pipefail; bash .github/scripts/review_revision_c.sh "$PUSH_BEFORE" "$PUSH_AFTER" | tee "$GITHUB_STEP_SUMMARY"
