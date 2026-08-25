@@ -13,6 +13,7 @@ int main(int ac, char **av)
 
 	buf = NULL;
 	s = av[1];
+	sl = strlen(s);
 	len = 0;
 	cap = 0;
 
