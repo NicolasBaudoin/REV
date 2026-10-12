@@ -25,5 +25,4 @@ git add entrainement/vbc && git commit -m "vbc: essai J3" && git push
   (`cp rank04/level2/vbc/given.c entrainement/vbc/vbc.c`) et complète-la de mémoire.
 - Pour un nouvel essai le lendemain, efface et recommence : l'historique git garde tes anciennes versions,
   ce qui permet de voir tes progrès (`git log -p entrainement/vbc`).
-- À chaque push sur `main`, la CI lance `./test.sh` sur les exos modifiés et affiche le résultat
-  dans l'onglet *Actions*. L'agent **Revision C Reviewer** peut ensuite faire une revue détaillée.
+- Pour une revue détaillée d'un essai, demande à l'agent **Revision C Reviewer** (`.github/agents/`).

@@ -33,7 +33,7 @@ REV/
 ├── entrainement/        <- TES essais de mémoire : entrainement/<exo>/<fichiers de l'exam>
 ├── tools/               <- vérificateur des fonctions autorisées (utilisé par test.sh)
 ├── archive/rank03/      <- tout le travail du rank 03 (exos, cheat-sheet, anciens essais)
-└── .github/             <- CI : à chaque push sur main, test.sh tourne sur tes essais
+└── .github/agents/      <- agent de revue détaillée de tes essais (Revision C Reviewer)
 ```
 
 ## Le harnais de test
